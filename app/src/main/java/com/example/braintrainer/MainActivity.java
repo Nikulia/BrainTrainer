@@ -22,8 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int MAX_SUM = 200;
     private static final int COUNT_OF_VARIANTS = 4;
     public static final String SCORE = "score";
-    private static final String GAMES_PLAYED = "gamesPlayed";
-    private static final String TIMER = "timer";
+
     private Random random;
     private int rightVariant;
     private int score;
@@ -93,10 +92,18 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Integer> getVariants(int rightVariant) {
         ArrayList<Integer> variants = new ArrayList<>();
         variants.add(rightVariant);
-        for (int i = 0; i < COUNT_OF_VARIANTS - 1; i++)
-            variants.add(random.nextInt(MAX_SUM) - MAX_SUM / 2);
+        for (int i = 0; i < COUNT_OF_VARIANTS - 1; i++) {
+            int wrongVariant = getWrongVariant();
+            while (wrongVariant == rightVariant)
+                wrongVariant = getWrongVariant();
+            variants.add(wrongVariant);
+        }
         Collections.shuffle(variants);
         return variants;
+    }
+
+    private int getWrongVariant() {
+        return random.nextInt(MAX_SUM) - MAX_SUM / 2;
     }
 
     private String getStringSeconds(int seconds) {
