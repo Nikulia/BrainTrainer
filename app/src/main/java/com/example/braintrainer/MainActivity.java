@@ -3,11 +3,13 @@ package com.example.braintrainer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
@@ -20,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
     private static final int MAX_SUM = 200;
     private static final int COUNT_OF_VARIANTS = 4;
     public static final String SCORE = "score";
+    private static final String GAMES_PLAYED = "gamesPlayed";
+    private static final String TIMER = "timer";
     private Random random;
     private int rightVariant;
     private int score;
@@ -103,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
     public void onClickChooseVariant(View view) {
         countOfGamesPlayed++;
         Button button = (Button) view;
-        if(Integer.parseInt(button.getText().toString()) == rightVariant) {
+        if (Integer.parseInt(button.getText().toString()) == rightVariant) {
             Toast.makeText(this, getString(R.string.right_answer), Toast.LENGTH_SHORT).show();
             score++;
         } else
@@ -113,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
         setScoreToTextView(score, countOfGamesPlayed);
         timer.start();
     }
+
 
     private void setScoreToTextView(int score, int gamesPlayed) {
         String scoreInfo = String.format("%d / %d", score, gamesPlayed);
