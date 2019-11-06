@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
         score = 0;
         countOfGamesPlayed = 0;
         setScoreToTextView(score, countOfGamesPlayed);
-        setVariantsAndTask();
         timer = new CountDownTimer(17_000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
