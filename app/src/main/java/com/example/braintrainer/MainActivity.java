@@ -3,13 +3,11 @@ package com.example.braintrainer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
@@ -21,6 +19,9 @@ public class MainActivity extends AppCompatActivity {
     private static final int MAX = 100;
     private static final int MAX_SUM = 200;
     private static final int COUNT_OF_VARIANTS = 4;
+    private static final int TIME_FOR_GAME_IN_MILLISECONDS = 6_000;
+    private static final int CRITICAL_TIME_IN_MILLISECONDS = 3_000;
+    public static final int MILLISECONDS_IN_SECOND = 1_000;
     public static final String SCORE = "score";
 
     private Random random;
@@ -51,18 +52,21 @@ public class MainActivity extends AppCompatActivity {
         score = 0;
         countOfGamesPlayed = 0;
         setScoreToTextView(score, countOfGamesPlayed);
-        timer = new CountDownTimer(17_000, 1000) {
+        timer = new CountDownTimer(TIME_FOR_GAME_IN_MILLISECONDS, MILLISECONDS_IN_SECOND) {
             @Override
             public void onTick(long millisUntilFinished) {
-                int secondsLeft = (int) millisUntilFinished / 1000;
+                int secondsLeft = (int) millisUntilFinished / MILLISECONDS_IN_SECOND;
                 secondsLeft++;
                 textViewTimer.setText(getStringSeconds(secondsLeft));
+                if (millisUntilFinished < CRITICAL_TIME_IN_MILLISECONDS)
+                    textViewTimer.setTextColor(getResources().getColor(R.color.red));
+                else
+                    textViewTimer.setTextColor(getResources().getColor(android.R.color.holo_green_light));
             }
 
             @Override
             public void onFinish() {
                 textViewTimer.setText(getStringSeconds(0));
-                textViewTimer.setTextColor(getResources().getColor(R.color.red));
                 Intent intent = new Intent(getApplicationContext(), EndGameActivity.class);
                 intent.putExtra(SCORE, score);
                 startActivity(intent);
